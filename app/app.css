@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+@import "tailwindcss";
+
+
+@theme {
+  --color-background-home: #FFFF77;
+  --font-dotgothic: "DotGothic16"
+}
+
