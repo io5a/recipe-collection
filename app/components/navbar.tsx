@@ -5,7 +5,7 @@ export default function Navbar() {
 
   return (
   <>
-    <div className="fixed w-full bg-background-home border-b-2 border-solid border-red-700 flex items-center justify-between px-5 font-dotgothic text-2xl">
+    <div className="z-100 fixed w-full bg-background-home border-b-2 border-solid border-red-700 flex items-center justify-between px-5 font-dotgothic text-2xl">
       <Link to={"/"} className="cursor-pointer">Home</Link>
       <Form action="/search" onSubmit={(event) => {
         const form = event.currentTarget;

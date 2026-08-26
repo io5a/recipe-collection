@@ -8,7 +8,7 @@ export function Login() {
   const [cred,setCred]=useState({email:"",password:""})
   const [error,setError]=useState<AuthError | null>()
   const [signingUp,setSigningUp]=useState(false)
-
+  
   async function handleSubmit(e:React.SubmitEvent<HTMLFormElement>){
       e.preventDefault()
       let response:AuthResponse;

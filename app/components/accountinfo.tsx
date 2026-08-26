@@ -2,20 +2,24 @@ import type { User } from "@supabase/supabase-js";
 import { useAuth } from "~/auth/authProvider";
 import { supabase } from "~/auth/supabaseClient";
 import { CustomRecipe } from "./accountr-recipe";
+import React, { useRef } from "react";
+import type { Ref,RefObject } from "react";
 
 async function logout() {
   await supabase.auth.signOut();
 }
 
 
-async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-  const file = event.target.files?.[0];
-  if (!file) return;
-}
 const pfpLink =
   "https://www.shutterstock.com/shutterstock/photos/580533673/display_1500/stock-vector-emoticon-making-a-funny-face-580533673.jpg";
 export function AccountInfo() {
   const { currentUser } = useAuth() as { currentUser: User };
+
+  const ref=useRef<HTMLInputElement>()
+
+  function handleClick(e:React.MouseEvent<HTMLButtonElement>){
+    ref.current.click()
+  }
 
   return (
     // desktop view
@@ -27,7 +31,7 @@ export function AccountInfo() {
               <div className="flex flex-col items-center text-xl text-red-700">
                 <span className="text-4xl mb-2">HELLO,</span>
                 <div>{currentUser.email}</div>
-                <hr className="border-1 w-full mt-3" />
+                <hr className="border w-full mt-3" />
               </div>
               <img className="rounded-full h-10/30" src={pfpLink} />
               <div className="flex flex-col gap-3 items-center ">
@@ -47,9 +51,10 @@ export function AccountInfo() {
                 my recipes
               </div>
               <div className="grid grid-cols-2 gap-2 overflow-auto">
-                <button className="cursor-pointer hover:bg-red-800 bg-red-700 absolute bottom-8 right-8 w-13 h-13 pb-2 rounded-full text-4xl text-background-home border-2 border-red-900 drop-shadow-md drop-shadow-black">
+                <button onClick={handleClick} className="cursor-pointer hover:bg-red-800 bg-red-700 absolute bottom-8 right-8 w-13 h-13 pb-2 rounded-full text-4xl text-background-home border-2 border-red-900 drop-shadow-md drop-shadow-black">
                   +
                 </button>
+                <input type="file" ref={ref} className="hidden"/>
                 <CustomRecipe />
                 <CustomRecipe />
                 <CustomRecipe />
@@ -85,16 +90,10 @@ export function AccountInfo() {
                   >
                     log out
                   </button>
-                  <button className="cursor-pointer hover:bg-red-800 bg-red-700 bottom-8 right-8 w-10 h-10 pb-1 rounded-full text-2xl text-background-home">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={{ display: "none" }}
-                      id="contained-button-file"
-                      onChange={handleFileChange}
-                    />
+                  <button onClick={handleClick} className="cursor-pointer hover:bg-red-800 bg-red-700 bottom-8 right-8 w-10 h-10 pb-1 rounded-full text-2xl text-background-home">
                     +
                   </button>
+                  <input type="file" ref={ref} className="hidden"/>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2 p-3">
