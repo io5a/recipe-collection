@@ -4,7 +4,7 @@ import ArrowSvg from "./arrowsvg";
 export function Recipe({ meal }: { meal: Meal }) {
   return (
     <>
-      <div className="flex align-center justify-center h-100">
+      <div className="outline-1 flex align-center justify-center h-100 ">
         <div className="flex flex-col justify-between m-10 w-full align-center">
           <div className="flex justify-between w-full font-dotgothic">
             <div className="">

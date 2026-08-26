@@ -50,5 +50,5 @@ export type Meal = {
 };
 
 export type Meals = {
-  meals: Array<Meal>;
+  meals: Array<Meal> | null;
 };

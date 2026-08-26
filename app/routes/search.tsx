@@ -1,17 +1,24 @@
-import { useSearchParams } from "react-router";
 import { Recipe } from "~/components/recipe";
 import { searchDB } from "~/lib/searchdb";
+import { useLoaderData } from "react-router";
+import { Recipes } from "~/components/recipes";
 
+export async function loader({ request }: { request: Request }) {
+  const url = new URL(request.url)
+  const query = url.searchParams.get("q")
+  const result = await searchDB(query);
+  return result ?? []
+}
 
-export default async function Search() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const searchStr=searchParams.get("q")
-  const {meals}=await searchDB(searchStr)
+export default function Search() {
+  const meals=useLoaderData<typeof loader>();
+  
+  console.log(meals)
   return (
     <>
-      {meals.map((meal)=>{
-        <Recipe meal={meal}></Recipe>
-      })}
+      <div className="">
+        <Recipes meals={meals}></Recipes>
+      </div>
     </>
   );
 }

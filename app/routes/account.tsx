@@ -1,3 +1,15 @@
+import { useAuth } from "~/auth/authProvider";
+import {Login} from "~/components/login";
+import type { Session, User } from "@supabase/supabase-js";
+import { AccountInfo } from "~/components/accountinfo";
+
+
+
 export default function Account() {
-  return <>test account</>;
+  const { session } = useAuth() as { session: Session};
+  return (<>
+    <div>
+      {session ? <AccountInfo/> : <Login/> } 
+    </div>
+  </>);
 }
