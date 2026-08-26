@@ -17,7 +17,6 @@ export function Login() {
       else
         response = await supabase.auth.signInWithPassword(cred)
       const {data,error}=response
-      console.log(data)
       setError(error)
   }
   

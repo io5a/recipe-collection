@@ -1,4 +1,3 @@
-import { Recipe } from "~/components/recipe";
 import { searchDB } from "~/lib/searchdb";
 import { useLoaderData } from "react-router";
 import { Recipes } from "~/components/recipes";
@@ -13,7 +12,6 @@ export async function loader({ request }: { request: Request }) {
 export default function Search() {
   const meals=useLoaderData<typeof loader>();
   
-  console.log(meals)
   return (
     <>
       <div className="">

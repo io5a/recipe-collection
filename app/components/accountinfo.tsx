@@ -2,24 +2,58 @@ import type { User } from "@supabase/supabase-js";
 import { useAuth } from "~/auth/authProvider";
 import { supabase } from "~/auth/supabaseClient";
 import { CustomRecipe } from "./accountr-recipe";
-import React, { useRef } from "react";
-import type { Ref,RefObject } from "react";
+import React, { useEffect, useRef } from "react";
+import { uploadFile } from "~/lib/uploadfile";
+import { useState } from "react";
+import { getAllFiles } from "~/lib/getimages";
+import { CustomRecipes } from "./custom-recipes";
 
 async function logout() {
   await supabase.auth.signOut();
 }
-
-
 const pfpLink =
   "https://www.shutterstock.com/shutterstock/photos/580533673/display_1500/stock-vector-emoticon-making-a-funny-face-580533673.jpg";
+
 export function AccountInfo() {
   const { currentUser } = useAuth() as { currentUser: User };
+  let [imagesData, setImagesData] = useState<
+    {
+      error: string | null;
+      path: string | null;
+      signedURL: string | null;
+      signedUrl: string | null;
+    }[]
+  >();
 
-  const ref=useRef<HTMLInputElement>()
+  const ref = useRef<HTMLInputElement>(null);
 
-  function handleClick(e:React.MouseEvent<HTMLButtonElement>){
-    ref.current.click()
+  function handleRemoved(path: string) {
+    setImagesData((images) => {
+      images.filter((image) => image.path !== path);
+    });
   }
+
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const selectedFile = event.target.files?.[0];
+
+    if (!selectedFile || !currentUser) return;
+
+    try {
+      await uploadFile(selectedFile, currentUser);
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
+
+    event.target.value = "";
+    getAllFiles(currentUser).then((data) => {
+      setImagesData(data);
+    });
+  }
+  useEffect(() => {
+    getAllFiles(currentUser).then((data) => {
+      setImagesData(data);
+    });
+  }, []);
 
   return (
     // desktop view
@@ -51,18 +85,19 @@ export function AccountInfo() {
                 my recipes
               </div>
               <div className="grid grid-cols-2 gap-2 overflow-auto">
-                <button onClick={handleClick} className="cursor-pointer hover:bg-red-800 bg-red-700 absolute bottom-8 right-8 w-13 h-13 pb-2 rounded-full text-4xl text-background-home border-2 border-red-900 drop-shadow-md drop-shadow-black">
+                <button
+                  onClick={() => ref.current?.click()}
+                  className="cursor-pointer hover:bg-red-800 bg-red-700 absolute bottom-8 right-8 w-13 h-13 pb-2 rounded-full text-4xl text-background-home border-2 border-red-900 drop-shadow-md drop-shadow-black"
+                >
                   +
                 </button>
-                <input type="file" ref={ref} className="hidden"/>
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
+                <input
+                  type="file"
+                  ref={ref}
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                <CustomRecipes onRemoved={handleRemoved} urls={imagesData} />
               </div>
             </div>
           </div>
@@ -90,21 +125,22 @@ export function AccountInfo() {
                   >
                     log out
                   </button>
-                  <button onClick={handleClick} className="cursor-pointer hover:bg-red-800 bg-red-700 bottom-8 right-8 w-10 h-10 pb-1 rounded-full text-2xl text-background-home">
+                  <button
+                    onClick={() => ref.current?.click()}
+                    className="cursor-pointer hover:bg-red-800 bg-red-700 bottom-8 right-8 w-10 h-10 pb-1 rounded-full text-2xl text-background-home"
+                  >
                     +
                   </button>
-                  <input type="file" ref={ref} className="hidden"/>
+                  <input
+                    type="file"
+                    ref={ref}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2 p-3">
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
-                <CustomRecipe />
+                <CustomRecipes onRemoved={handleRemoved} urls={imagesData} />
               </div>
             </div>
           </div>
