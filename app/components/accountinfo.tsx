@@ -1,7 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 import { useAuth } from "~/auth/authProvider";
 import { supabase } from "~/auth/supabaseClient";
-import { CustomRecipe } from "./accountr-recipe";
 import React, { useEffect, useRef } from "react";
 import { uploadFile } from "~/lib/uploadfile";
 import { useState } from "react";
@@ -11,11 +10,12 @@ import { CustomRecipes } from "./custom-recipes";
 async function logout() {
   await supabase.auth.signOut();
 }
-const pfpLink =
-  "https://www.shutterstock.com/shutterstock/photos/580533673/display_1500/stock-vector-emoticon-making-a-funny-face-580533673.jpg";
 
 export function AccountInfo() {
-  const { currentUser } = useAuth() as { currentUser: User };
+  const { currentUser, loading } = useAuth() as {
+    currentUser: User;
+    loading: boolean;
+  };
   let [imagesData, setImagesData] = useState<
     {
       error: string | null;
@@ -28,9 +28,11 @@ export function AccountInfo() {
   const ref = useRef<HTMLInputElement>(null);
 
   function handleRemoved(path: string) {
-    setImagesData((images) => {
-      images.filter((image) => image.path !== path);
+    const filteredImages = imagesData.filter((image) => {
+      return image.path !== path;
     });
+    setImagesData(filteredImages);
+    console.log("Images data", imagesData);
   }
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -54,10 +56,10 @@ export function AccountInfo() {
       setImagesData(data);
     });
   }, []);
-
   return (
     // desktop view
     <>
+
       <main className="relative max-[650px]:hidden w-screen min-h-screen flex items-center justify-center -mt-15">
         <div className="font-dotgothic bg-background-home h-170 max-[1100px]:h-130 w-10/20 max-[1100px]:w-19/21 rounded-lg flex flex-col items-center justify-center">
           <div className="flex w-full h-full justify-around">

@@ -10,19 +10,30 @@ async function getRecipe():Promise<Meal>{
 }
 
 export async function getRecipes(nrRecipe: number) {
-  const mealsArr:Array<Meal>=[]
-  while(mealsArr.length!==nrRecipe){
-    let data = await getRecipe()
-    const currentId=mealsArr.map((meal)=>meal.idMeal)
-    while(currentId.includes(data.idMeal)) {
-      data = await getRecipe()
-    }
-    mealsArr.push(data)
+  const promises: Promise<Meal>[] = [];
+  for(let i=0;i<nrRecipe;i++){
+    promises.push(getRecipe())
   }
-  if(mealsArr.length!==nrRecipe)
-    if(mealsArr.length<nrRecipe)
-      mealsArr.push(await getRecipe())
-    if(mealsArr.length>nrRecipe)
-      mealsArr.pop()
-  return mealsArr
+
+  let uniqueMeals: Array<Meal> = [];
+
+  await Promise.all(promises).then((meals)=>{
+    uniqueMeals=meals;
+  });
+  return uniqueMeals;
+}
+
+
+export async function GetRecipeById(id: string): Promise<Meal> {
+  const response = await fetch(
+    `https://themealdb.com/api/json/v1/1/lookup.php?i=${encodeURIComponent(id)}`
+  );
+
+  const data: Meals = await response.json();
+
+  if (data.meals?.[0]) {
+    return data.meals[0];
+  }
+
+  throw new Error("Recipe not found");
 }

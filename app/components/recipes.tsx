@@ -7,7 +7,7 @@ export function Recipes({ meals }: { meals: Meal[] }) {
     <div className="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 row-auto">
       {meals.map((meal)=>{
         return(
-        <div className="bg-background-home w-full h-full cursor-pointer" key={meal.idMeal}>
+        <div className="bg-background-home w-full h-full" key={meal.idMeal}>
           <Recipe meal={meal}></Recipe>
         </div>
         )

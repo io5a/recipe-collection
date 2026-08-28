@@ -33,7 +33,8 @@ export function AuthProvider({ children }) {
     userLoggedIn,
     setUserLoggedIn,
   };
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }
 
 export default AuthProvider;
