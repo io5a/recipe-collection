@@ -113,19 +113,19 @@ export function AccountInfo() {
         </div>
       </main>
       {/* mobile view */}
-      <main className="min-[650px]:hidden w-screen min-h-screen flex items-center justify-center -mt-15">
-        <div className="relative w-10/12 h-160 font-dotgothic bg-background-home rounded-lg flex flex-col items-center justify-center">
+      <main className="min-[650px]:hidden w-screen h-screen flex items-center justify-center -mt-15">
+        <div className="relative w-10/12 h-10/13 font-dotgothic bg-background-home rounded-lg flex flex-col items-center">
           <div className=" text-2xl flex self-center items-center gap-4 border-b-2 pb-3 p-2 m-2 border-red-700 text-red-700">
             <img className="w-10/40 rounded-full" src={pfpLink} />
-            <span>
-              HELLO, <span>{currentUser.email}</span>
+            <span className="text-xl">
+              HELLO, <span className="text-base">{currentUser.email}</span>
             </span>
           </div>
           <div className="flex flex-col items-center overflow-scroll">
             <div className="h-10/13">
-              <div className="absolute bottom-3 w-full flex items-center justify-center">
-                <div className="text-background-home border-2 border-red-700 bg-background-home/80 backdrop-blur-sm w-10/13 flex justify-between p-3 rounded-xl">
-                  <button className="cursor-pointer hover:bg-red-800 bg-red-700 rounded-md p-2">
+              <div className="absolute bottom-3 left-0 w-full flex items-center justify-center">
+                <div className="text-background-home border-2 border-red-700 bg-background-home/80 backdrop-blur-sm w-10/13 flex justify-between gap-2 items-center p-3 rounded-xl">
+                  <button className="cursor-pointer hover:bg-red-800 bg-red-700 rounded-md p-2 text-base">
                     change password
                   </button>
                   <button
