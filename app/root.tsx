@@ -28,6 +28,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Navbar></Navbar>
           <div className="pt-15"></div>
           {children}
+          
         </AuthProvider>
         <ScrollRestoration />
         <SpeedInsights/>

@@ -14,7 +14,6 @@ async function logout() {
 const pfpLink =
   "https://www.shutterstock.com/shutterstock/photos/580533673/display_1500/stock-vector-emoticon-making-a-funny-face-580533673.jpg";
 
-
 export function AccountInfo() {
   const { currentUser, loading } = useAuth() as {
     currentUser: User;
@@ -56,14 +55,18 @@ export function AccountInfo() {
     });
   }
   useEffect(() => {
-    getAllFiles(currentUser).then((data) => {
-      setImagesData(data);
-    });
-  }, []);
+    if (loading || !currentUser) return;
+
+    getAllFiles(currentUser)
+      .then(setImagesData)
+      .catch((error) => {
+        console.error("Failed to load saved recipes:", error);
+        setImagesData([]);
+      });
+  }, [currentUser, loading]);
   return (
     // desktop view
     <>
-
       <main className="relative max-[650px]:hidden w-screen min-h-screen flex items-center justify-center -mt-15">
         <div className="font-dotgothic bg-background-home h-170 max-[1100px]:h-130 w-10/20 max-[1100px]:w-19/21 rounded-lg flex flex-col items-center justify-center">
           <div className="flex w-full h-full justify-around">

@@ -26,6 +26,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const value = {
+    loading,
     session,
     setSession,
     currentUser,
