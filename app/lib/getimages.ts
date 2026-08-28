@@ -7,7 +7,10 @@ export async function getAllFiles(currentUser:User){
   .eq("user_id",currentUser.id)
   if(PathError)
     throw PathError
-  
+
+  if(pathData.length===0)
+    return []
+
   const PathStr=PathData.map((row)=>{
     const {my_photo_URL} = row
     return my_photo_URL
