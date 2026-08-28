@@ -10,7 +10,8 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import Navbar from "./components/navbar";
 import AuthProvider from "./auth/authProvider";
-
+import { SpeedInsights } from "@vercel/speed-insights/react"
+import { Analytics } from "@vercel/analytics/react"
 
 export function Layout({ children }: { children: React.ReactNode }) {
 
@@ -29,6 +30,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </AuthProvider>
         <ScrollRestoration />
+        <SpeedInsights/>
+        <Analytics />
         <Scripts />
       </body>
     </html>

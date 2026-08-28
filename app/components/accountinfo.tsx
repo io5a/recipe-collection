@@ -11,6 +11,10 @@ async function logout() {
   await supabase.auth.signOut();
 }
 
+const pfpLink =
+  "https://www.shutterstock.com/shutterstock/photos/580533673/display_1500/stock-vector-emoticon-making-a-funny-face-580533673.jpg";
+
+
 export function AccountInfo() {
   const { currentUser, loading } = useAuth() as {
     currentUser: User;

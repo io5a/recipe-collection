@@ -13,7 +13,7 @@ export function Recipe({ meal }: { meal: Meal }) {
             <div># {meal.idMeal}</div>
           </div>
           <div className="flex justify-center w-full">
-            <img className="h-50" src={`${meal.strMealThumb}/medium`}></img>
+            <img fetchPriority="high" className="h-50" src={`${meal.strMealThumb}/medium`}></img>
           </div>
           <div className="flex justify-center w-full font-dotgothic align-center">
             {meal.strMeal}

@@ -4,7 +4,8 @@
 @layer base{
   @font-face {
     font-family: DotGothic16;
-    src: url(../fonts/DotGothic16-Regular.ttf);
+    src: url(../fonts/DotGothic16-Regular.woff2);
+    font-display: swap;
   }
 }
 
