@@ -8,7 +8,7 @@ export async function getAllFiles(currentUser:User){
   if(PathError)
     throw PathError
 
-  if(pathData.length===0)
+  if(PathData.length===0)
     return []
 
   const PathStr=PathData.map((row)=>{
