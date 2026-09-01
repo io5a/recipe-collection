@@ -1,13 +1,7 @@
 import { Recipes } from "~/components/recipes";
-import { getRecipes } from "~/lib/getrecipes";
 import { useLoaderData } from "react-router";
 
-export async function loader() {
-  return getRecipes(12);
-}
-
 export default function Home() {
-  const meals = useLoaderData<typeof loader>();
   return (
   <>
     <div className="bg-background-home h-70 flex flex-col justify-center items-center font-dotgothic text-3xl gap-5">
@@ -19,7 +13,7 @@ export default function Home() {
       <span className="text-base px-3 text-center">See the 12 random recipes below to get started</span>
     </div>
     <ol className="grid">
-      <Recipes meals={meals}/>
+      <Recipes/>
     </ol>
   </>
   );

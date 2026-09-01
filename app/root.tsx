@@ -12,6 +12,9 @@ import Navbar from "./components/navbar";
 import AuthProvider from "./auth/authProvider";
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import { Analytics } from "@vercel/analytics/react"
+import {QueryClientProvider, QueryClient} from "@tanstack/react-query";
+
+const queryClient=new QueryClient()
 
 export function Layout({ children }: { children: React.ReactNode }) {
 
@@ -24,12 +27,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="bg-yellow-200">
-        <AuthProvider>
-          <Navbar></Navbar>
-          <div className="pt-15"></div>
-          {children}
-          
-        </AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <Navbar></Navbar>
+            <div className="pt-15"></div>
+            {children}
+          </AuthProvider>
+        </QueryClientProvider>
         <ScrollRestoration />
         <SpeedInsights/>
         <Analytics />
