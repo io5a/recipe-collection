@@ -6,6 +6,8 @@ import { uploadFile } from "~/lib/uploadfile";
 import { useState } from "react";
 import { getAllFiles } from "~/lib/getimages";
 import { CustomRecipes } from "./custom-recipes";
+import { toast, ToastContainer } from "react-toastify";
+import DragAndDrop from "./dragndrop";
 
 async function logout() {
   await supabase.auth.signOut();
@@ -35,18 +37,31 @@ export function AccountInfo() {
       return image.path !== path;
     });
     setImagesData(filteredImages);
-    console.log("Images data", imagesData);
+    toast.info("File removed succesfully");
   }
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0];
-
     if (!selectedFile || !currentUser) return;
+
+    const regex = /image-*/g;
+
+    if (!selectedFile.type.match(regex)) {
+      toast.warn(`File type not supported. Please upload an image file.`);
+      return;
+    }
+    if (selectedFile.size > 30000000) {
+      toast.warn("File is too big. Resize it or try another one.");
+      return;
+    }
 
     try {
       await uploadFile(selectedFile, currentUser);
     } catch (error) {
       console.error("Upload failed:", error);
+      toast.warn(`Upload failed: ${error}`);
+    } finally {
+      toast.info("File uploaded succesfully");
     }
 
     event.target.value = "";
@@ -54,6 +69,7 @@ export function AccountInfo() {
       setImagesData(data);
     });
   }
+
   useEffect(() => {
     if (loading || !currentUser) return;
 
@@ -61,12 +77,54 @@ export function AccountInfo() {
       .then(setImagesData)
       .catch((error) => {
         console.error("Failed to load saved recipes:", error);
+        toast.warn(`Failed to load saved recipes: ${error}`);
         setImagesData([]);
       });
   }, [currentUser, loading]);
+
+  async function handleMultipleFiles(fileList: FileList) {
+    const files=Array.from(fileList)
+    if (!files.length || !currentUser) return;
+    const regex = /image-*/g;
+
+    files.forEach(
+      (file) =>{
+        async function upload(file: File) {
+          if (!file.type.match(regex)) {
+            toast.warn(
+              `File ${file.name} is unsupported. Please upload an image.`,
+            );
+            return;
+          }
+          if (file.size > 30000000) {
+            toast.warn(
+              `File ${file.name} is too big. Resize it or try another one.`,
+            );
+            return;
+          }
+
+          try {
+            await uploadFile(file, currentUser);
+          } catch (error) {
+            console.error("Upload failed:", error);
+            toast.warn(`Upload failed for file ${file.name}: ${error}`);
+          } finally {
+            toast.info(`File ${file.name} uploaded succesfully`);
+          }
+
+          getAllFiles(currentUser).then((data) => {
+            setImagesData(data);
+          });
+        }
+        upload(file)
+        }
+    );
+  }
+
   return (
     // desktop view
     <>
+      <ToastContainer pauseOnFocusLoss={false} />
       <main className="relative max-[650px]:hidden w-screen min-h-screen flex items-center justify-center -mt-15">
         <div className="font-dotgothic bg-background-home h-170 max-[1100px]:h-130 w-10/20 max-[1100px]:w-19/21 rounded-lg flex flex-col items-center justify-center">
           <div className="flex w-full h-full justify-around">
@@ -76,6 +134,7 @@ export function AccountInfo() {
                 <div>{currentUser.email}</div>
                 <hr className="border w-full mt-3" />
               </div>
+              <DragAndDrop onFilesSelected={handleMultipleFiles} />
               <img className="rounded-full h-10/30" src={pfpLink} />
               <div className="flex flex-col gap-3 items-center ">
                 <button className="bg-red-700 hover:bg-red-800 p-3 rounded-xl text-background-home text-2xl cursor-pointer ">
@@ -105,6 +164,7 @@ export function AccountInfo() {
                   ref={ref}
                   onChange={handleFileChange}
                   className="hidden"
+                  accept="image/*"
                 />
                 <CustomRecipes onRemoved={handleRemoved} urls={imagesData} />
               </div>
@@ -145,6 +205,7 @@ export function AccountInfo() {
                     ref={ref}
                     onChange={handleFileChange}
                     className="hidden"
+                    accept="image/*"
                   />
                 </div>
               </div>
