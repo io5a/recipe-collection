@@ -6,14 +6,14 @@ export function Recipe({ meal }: { meal: Meal }) {
 
   return (
     <>
-      <div className="outline-1 flex align-center justify-center h-100 ">
+      <div className="outline-1 flex align-center justify-center h-100">
         <div className="flex flex-col justify-between m-10 w-full align-center">
           <div className="flex justify-between w-full font-dotgothic">
             <div className="">Entry</div>
             <div># {meal.idMeal}</div>
           </div>
           <div className="flex justify-center w-full">
-            <img fetchPriority="high" className="h-50" src={`${meal.strMealThumb}/medium`}></img>
+            <img fetchPriority="high" className="h-50" src={`${meal.strMealThumb}/medium`} alt={`Recipe for : ${meal.strMeal}`}></img>
           </div>
           <div className="flex justify-center w-full font-dotgothic align-center">
             {meal.strMeal}

@@ -4,6 +4,7 @@ import { useLoaderData } from "react-router";
 export default function Home() {
   return (
   <>
+  <title>Home Page</title>
     <div className="bg-background-home h-70 flex flex-col justify-center items-center font-dotgothic text-3xl gap-5">
       <span className="border-b-2 border-red-700">Check Out</span>
       <span className="text-xl text-center p-3">
