@@ -7,6 +7,7 @@ export default function Details() {
   if (recipeId === null) return;
   return (
     <>
+    <title>Details Page</title>
       <RecipeDetails recipeId={recipeId}/>
     </>
   );
