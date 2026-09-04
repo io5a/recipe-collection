@@ -2,7 +2,6 @@ import { getRecipe } from "~/lib/getrecipes";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Recipe } from "./recipe";
 import type { Meal, Meals } from "~/types";
-import { searchDB } from "~/lib/searchdb";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
